@@ -1,9 +1,11 @@
+## [Download latest release](https://github.com/nicko88/MovieDemoClipper/releases/latest)
+
 # MovieDemoClipper
 #### Quickly and easily split movie files into demo clips keeping original quality
 
 ### Screenshot
 
-<img src="https://user-images.githubusercontent.com/1866075/146134133-588baa74-4fdb-4fe5-b764-21f71b2e4e34.png" width="549px" />
+<img src="https://user-images.githubusercontent.com/1866075/215239398-e5c15803-8b25-4adc-ba9c-819198e5c2ca.png" width="549px" />
 
 ### How To Use
 * Open up MovieDemoClipper.

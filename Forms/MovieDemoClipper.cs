@@ -27,12 +27,12 @@ namespace MovieDemoClipper.Forms
 
         private void btnClipStart_Click(object sender, EventArgs e)
         {
-            lblClipStart.Text = GetTime();
+            tbClipStart.Text = GetTime();
         }
 
         private void btnClipEnd_Click(object sender, EventArgs e)
         {
-            lblClipEnd.Text = GetTime();
+            tbClipEnd.Text = GetTime();
         }
 
         private void btnSaveClip_Click(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace MovieDemoClipper.Forms
             ProcessStartInfo clipProcessInfo = new ProcessStartInfo();
             try
             {
-                if (TimeSpan.Parse(lblClipEnd.Text).Subtract(TimeSpan.Parse(lblClipStart.Text)).TotalMilliseconds > 0)
+                if (TimeSpan.Parse(tbClipEnd.Text).Subtract(TimeSpan.Parse(tbClipStart.Text)).TotalMilliseconds > 0)
                 {
                     string ext = Path.GetExtension(_selectedFile);
 
@@ -55,7 +55,7 @@ namespace MovieDemoClipper.Forms
                     {
                         string clipName = saveFileDialog.FileName;
 
-                        string clipCMD = $@"-ss {lblClipStart.Text} -to {lblClipEnd.Text} -i ""{_selectedFile}"" -sn -c copy -map 0 ""{clipName}""";
+                        string clipCMD = $@"-ss {tbClipStart.Text} -to {tbClipEnd.Text} -i ""{_selectedFile}"" -sn -c copy -map 0 ""{clipName}""";
                         clipProcessInfo = new ProcessStartInfo(Path.Combine(_rootPath, "ffmpeg", "ffmpeg.exe"));
                         clipProcessInfo.Arguments = clipCMD;
                         Process clipProcess = Process.Start(clipProcessInfo);

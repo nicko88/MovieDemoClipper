@@ -32,13 +32,15 @@ namespace MovieDemoClipper.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.lblClipStart = new System.Windows.Forms.Label();
-            this.lblClipEnd = new System.Windows.Forms.Label();
             this.btnClipStart = new System.Windows.Forms.Button();
             this.btnClipEnd = new System.Windows.Forms.Button();
             this.lblFileName = new System.Windows.Forms.Label();
             this.btnSaveClip = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.tbClipStart = new System.Windows.Forms.MaskedTextBox();
+            this.tbClipEnd = new System.Windows.Forms.MaskedTextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -55,7 +57,7 @@ namespace MovieDemoClipper.Forms
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(13, 67);
+            this.label2.Location = new System.Drawing.Point(11, 67);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 20);
             this.label2.TabIndex = 6;
@@ -65,29 +67,11 @@ namespace MovieDemoClipper.Forms
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 103);
+            this.label3.Location = new System.Drawing.Point(19, 103);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(81, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "Clip End:";
-            // 
-            // lblClipStart
-            // 
-            this.lblClipStart.AutoSize = true;
-            this.lblClipStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClipStart.Location = new System.Drawing.Point(103, 67);
-            this.lblClipStart.Name = "lblClipStart";
-            this.lblClipStart.Size = new System.Drawing.Size(0, 20);
-            this.lblClipStart.TabIndex = 8;
-            // 
-            // lblClipEnd
-            // 
-            this.lblClipEnd.AutoSize = true;
-            this.lblClipEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClipEnd.Location = new System.Drawing.Point(102, 103);
-            this.lblClipEnd.Name = "lblClipEnd";
-            this.lblClipEnd.Size = new System.Drawing.Size(0, 20);
-            this.lblClipEnd.TabIndex = 9;
             // 
             // btnClipStart
             // 
@@ -115,7 +99,7 @@ namespace MovieDemoClipper.Forms
             // 
             this.lblFileName.AutoSize = true;
             this.lblFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFileName.Location = new System.Drawing.Point(77, 9);
+            this.lblFileName.Location = new System.Drawing.Point(68, 9);
             this.lblFileName.Name = "lblFileName";
             this.lblFileName.Size = new System.Drawing.Size(467, 20);
             this.lblFileName.TabIndex = 12;
@@ -132,18 +116,58 @@ namespace MovieDemoClipper.Forms
             this.btnSaveClip.UseVisualStyleBackColor = true;
             this.btnSaveClip.Click += new System.EventHandler(this.btnSaveClip_Click);
             // 
+            // tbClipStart
+            // 
+            this.tbClipStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbClipStart.Location = new System.Drawing.Point(106, 64);
+            this.tbClipStart.Mask = "00:00:00.000";
+            this.tbClipStart.Name = "tbClipStart";
+            this.tbClipStart.Size = new System.Drawing.Size(112, 26);
+            this.tbClipStart.TabIndex = 15;
+            // 
+            // tbClipEnd
+            // 
+            this.tbClipEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbClipEnd.Location = new System.Drawing.Point(106, 100);
+            this.tbClipEnd.Mask = "00:00:00.000";
+            this.tbClipEnd.Name = "tbClipEnd";
+            this.tbClipEnd.Size = new System.Drawing.Size(112, 26);
+            this.tbClipEnd.TabIndex = 16;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(104, 45);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(110, 16);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "HH:MM:SS.MIL";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(241, 43);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(149, 16);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "(From Media Player)";
+            // 
             // MovieDemoClipper
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(547, 140);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.tbClipEnd);
+            this.Controls.Add(this.tbClipStart);
             this.Controls.Add(this.btnSaveClip);
             this.Controls.Add(this.lblFileName);
             this.Controls.Add(this.btnClipEnd);
             this.Controls.Add(this.btnClipStart);
-            this.Controls.Add(this.lblClipEnd);
-            this.Controls.Add(this.lblClipStart);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -163,13 +187,15 @@ namespace MovieDemoClipper.Forms
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label lblClipStart;
-        private System.Windows.Forms.Label lblClipEnd;
         private System.Windows.Forms.Button btnClipStart;
         private System.Windows.Forms.Button btnClipEnd;
         private System.Windows.Forms.Label lblFileName;
         private System.Windows.Forms.Button btnSaveClip;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.MaskedTextBox tbClipStart;
+        private System.Windows.Forms.MaskedTextBox tbClipEnd;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
 
