@@ -112,6 +112,7 @@ namespace MovieDemoClipper.Forms
                 if (fileList.Length > 0)
                 {
                     lblFileName.Text = Path.GetFileName(fileList[0]);
+                    _selectedFile = fileList[0];
 
                     mpcProcessStartInfo = new ProcessStartInfo(Path.Combine(_rootPath, "mpc-be", "mpc-be64.exe"));
                     mpcProcessStartInfo.Arguments = $@"""{fileList[0]}""";
