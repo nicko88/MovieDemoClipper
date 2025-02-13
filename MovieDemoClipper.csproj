@@ -265,7 +265,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
     <Content Include="MovieDemoClipper.ico" />
   </ItemGroup>
   <ItemGroup />
