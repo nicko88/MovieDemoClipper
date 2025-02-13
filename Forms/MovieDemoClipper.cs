@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 using System.ComponentModel;
+using System.Text;
 
 namespace MovieDemoClipper.Forms
 {
     public partial class MovieDemoClipper : Form
     {
+        private readonly string _IPport = "127.0.0.1:13579";
         private readonly string _rootPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
         private string _selectedFile;
         public MovieDemoClipper()
@@ -25,14 +27,38 @@ namespace MovieDemoClipper.Forms
             Text += " v" + version;
         }
 
-        private void btnClipStart_Click(object sender, EventArgs e)
+        private void btnStartPrev_Click(object sender, EventArgs e)
         {
-            tbClipStart.Text = GetTime();
+            SeekKeyframe("897");
+            lblClipStart.Text = GetTime();
         }
 
-        private void btnClipEnd_Click(object sender, EventArgs e)
+        private void btnStartNext_Click(object sender, EventArgs e)
         {
-            tbClipEnd.Text = GetTime();
+            SeekKeyframe("898");
+            lblClipStart.Text = GetTime();
+        }
+
+        private void btnEndPrev_Click(object sender, EventArgs e)
+        {
+            SeekKeyframe("897");
+            lblClipEnd.Text = GetTime();
+        }
+
+        private void btnEndNext_Click(object sender, EventArgs e)
+        {
+            SeekKeyframe("898");
+            lblClipEnd.Text = GetTime();
+        }
+
+        private void lblClipStart_Click(object sender, EventArgs e)
+        {
+            SeekPlayer(lblClipStart.Text);
+        }
+
+        private void lblClipEnd_Click(object sender, EventArgs e)
+        {
+            SeekPlayer(lblClipEnd.Text);
         }
 
         private void btnSaveClip_Click(object sender, EventArgs e)
@@ -40,7 +66,7 @@ namespace MovieDemoClipper.Forms
             ProcessStartInfo clipProcessInfo = new ProcessStartInfo();
             try
             {
-                if (TimeSpan.Parse(tbClipEnd.Text).Subtract(TimeSpan.Parse(tbClipStart.Text)).TotalMilliseconds > 0)
+                if (TimeSpan.Parse(lblClipEnd.Text).Subtract(TimeSpan.Parse(lblClipStart.Text)).TotalMilliseconds > 0)
                 {
                     string ext = Path.GetExtension(_selectedFile);
 
@@ -55,7 +81,10 @@ namespace MovieDemoClipper.Forms
                     {
                         string clipName = saveFileDialog.FileName;
 
-                        string clipCMD = $@"-ss {tbClipStart.Text} -to {tbClipEnd.Text} -i ""{_selectedFile}"" -sn -c copy -map 0 ""{clipName}""";
+                        TimeSpan tsClipStart = TimeSpan.Parse(lblClipStart.Text);
+                        TimeSpan tsClipEnd = TimeSpan.Parse(lblClipEnd.Text);
+
+                        string clipCMD = $@"-ss {tsClipStart.Add(TimeSpan.FromMilliseconds(500)).ToString("G").Substring(2, 12)} -to {tsClipEnd.ToString("G").Substring(2, 12)} -i ""{_selectedFile}"" -c copy -map 0 -disposition:s:0 0 ""{clipName}""";
                         clipProcessInfo = new ProcessStartInfo(Path.Combine(_rootPath, "ffmpeg", "ffmpeg.exe"));
                         clipProcessInfo.Arguments = clipCMD;
                         Process clipProcess = Process.Start(clipProcessInfo);
@@ -79,20 +108,38 @@ namespace MovieDemoClipper.Forms
             }
         }
 
+        private void SeekKeyframe(string cmd)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                try
+                {
+                    StringContent postContent = new StringContent($"wm_command={cmd}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                    _ = httpClient.PostAsync($"http://{_IPport}/command.html", postContent).Result;
+                }
+                catch
+                {
+                    MessageBox.Show("Error seeking keyframe in MPC-BE/HC.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         private string GetTime()
         {
             try
             {
-                HttpClient httpClient = new HttpClient();
-                string html = httpClient.GetStringAsync($"http://127.0.0.1:13579/variables.html").Result;
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    string html = httpClient.GetStringAsync($"http://{_IPport}/variables.html").Result;
 
-                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                doc.LoadHtml(html);
+                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    doc.LoadHtml(html);
 
-                _selectedFile = doc.GetElementbyId("filepath").InnerText;
-                lblFileName.Text = Path.GetFileName(_selectedFile);
+                    _selectedFile = doc.GetElementbyId("filepath").InnerText;
+                    lblFileName.Text = Path.GetFileName(_selectedFile);
 
-                return TimeSpan.FromMilliseconds(long.Parse(doc.GetElementbyId("position").InnerText)).ToString("G").Substring(2, 12);
+                    return TimeSpan.FromMilliseconds(long.Parse(doc.GetElementbyId("position").InnerText)).ToString("G").Substring(2, 12);
+                }
             }
             catch
             {
@@ -100,6 +147,22 @@ namespace MovieDemoClipper.Forms
             }
 
             return null;
+        }
+
+        private void SeekPlayer(string timeCode)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                try
+                {
+                    StringContent postContent = new StringContent($"wm_command=-1&position={timeCode}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                    _ = httpClient.PostAsync($"http://{_IPport}/command.html", postContent).Result;
+                }
+                catch
+                {
+                    MessageBox.Show("Error seeking MPC-BE/HC.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void MovieDemoClipper_DragDrop(object sender, DragEventArgs e)
